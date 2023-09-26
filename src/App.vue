@@ -16,7 +16,11 @@ import PocketBase from "pocketbase";
     <div class="wrapper" id="signOut">
       <div><SignIn msg="User, please sign in !" /></div>
       <label>email: </label><br />
-      <input type="email" required id="email" placeholder="username@domain.tld"
+      <input
+        type="email"
+        required
+        id="email"
+        placeholder="username@domain.tld"
       /><br />
       <label>password: </label><br />
       <input type="password" required id="passwd" /><br />
@@ -48,9 +52,9 @@ export default {
           document.getElementById("email").value,
           document.getElementById("passwd").value
         );
-        if (pb.authStore.isValid) {
-          document.getElementById("status").innerHTML = "You are now logged in";
-        }
+      if (pb.authStore.isValid) {
+        document.getElementById("status").innerHTML = "You are now logged in";
+      }
     },
     //this method allows the already registred user to log in the system.
     async register() {
@@ -67,6 +71,10 @@ export default {
           .collection("users")
           .requestVerification(document.getElementById("email").value);
       }
+    },
+    async logout() {
+      await pb.authStore.clear();
+      document.getElementById("status").innerHTML = "You are now logged out";
     },
   },
 };
