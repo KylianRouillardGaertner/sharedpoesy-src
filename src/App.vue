@@ -24,9 +24,8 @@ import PocketBase from "pocketbase";
       /><br />
       <label>password: </label><br />
       <input type="password" required id="passwd" /><br />
-      <button v-on:click="register()">Sign Up</button>
       <button v-on:click="login()">Sign In</button>
-      <button v-on:click="logout()">Sign out</button>
+      <button v-on:click="add()">Add</button>
       <p><label id="status"> You are not yet connected </label><br /></p>
     </div>
   </header>
@@ -35,47 +34,34 @@ import PocketBase from "pocketbase";
 </template>
 
 <script>
+var connected = false;
 var pocketbase_ip = "";
 if (import.meta.env.MODE === "production")
-  pocketbase_ip = "http://193.168.146.65/";
-else pocketbase_ip = "http://193.168.146.65/";
+  pocketbase_ip = "https://sae203.kyliangaertner.space:443";
+else pocketbase_ip = "http://127.0.0.1:8090";
 const pb = new PocketBase(pocketbase_ip);
-
+var currentUser;
 export default {
   methods: {
     //this method allows a new user to sign up the system. Once done, the user receives an email
     //asking for account validation. Once the validation made the user is added to the system
     async login() {
-      await pb
-        .collection("users")
-        .authWithPassword(
-          document.getElementById("email").value,
-          document.getElementById("passwd").value
-        );
+      await pb.collection("users").authWithOAuth2({ provider: "google" });
       if (pb.authStore.isValid) {
         document.getElementById("status").innerHTML = "You are now logged in";
+        connected = true;
+        currentUser = pb.authStore.model;
       }
-    },
-    //this method allows the already registred user to log in the system.
-    async register() {
-      const currentUser = await pb.collection("users").create({
-        email: document.getElementById("email").value,
-        password: document.getElementById("passwd").value,
-        passwordConfirm: document.getElementById("passwd").value,
-        name: "John Di",
+    } /*,
+    async add() {
+      const record = await pb.collection("poems").create({
+        title: "good year",
+        content: "how a nice year",
+        private: false,
+        email:currentUser.email
       });
-      if (currentUser) {
-        document.getElementById("status").innerHTML =
-          "Wainting for your email validation ...";
-        await pb
-          .collection("users")
-          .requestVerification(document.getElementById("email").value);
-      }
-    },
-    async logout() {
-      await pb.authStore.clear();
-      document.getElementById("status").innerHTML = "You are now logged out";
-    },
+    },*/,
+    //this method allows the already registred user to log in the system.
   },
 };
 </script>
