@@ -27,6 +27,7 @@ import PocketBase from "pocketbase";
       <button v-on:click="register()">Email SignUp</button>
       <button v-on:click="login()">Email SignIn</button>
       <button v-on:click="googlelogin()">Google SignIn</button>
+      <button v-on:click="githublogin()">Sign In with GitHub</button>
       <p><label id="status"> You are not yet connected </label><br /></p>
     </div>
     <div class="hidden" id="addPoem">
@@ -138,6 +139,16 @@ export default {
     },
     async googlelogin() {
       await pb.collection("users").authWithOAuth2({ provider: "google" });
+      if (pb.authStore.isValid) {
+        document.getElementById("status").innerHTML = "You are now logged in";
+        connected = true;
+        currentUser = pb.authStore.model;
+        document.getElementById("signOut").style.visibility = "hidden";
+        document.getElementById("addPoem").style.visibility = "visible";
+      }
+    },
+    async githublogin() {
+      await pb.collection("users").authWithOAuth2({ provider: "github" });
       if (pb.authStore.isValid) {
         document.getElementById("status").innerHTML = "You are now logged in";
         connected = true;
