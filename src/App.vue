@@ -62,7 +62,7 @@ Your poem here ...
         placeholder="my file"
         accept="image/png, image/jpeg"
       /><br />
-      <!--<img id="illustration" src="./assets/null.png" alt="poem illustration" width="75" height="75"/><br>-->
+      <img id="illustration" src="./assets/null.png" alt="poem illustration" width="75" height="75"/><br>
       <input type="checkbox" id="notpublic" value="true" />
       <label>Private poem</label>
       <br /><button v-on:click="createPoem()">Add the poem</button>
