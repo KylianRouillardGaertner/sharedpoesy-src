@@ -168,10 +168,10 @@ export default {
     },
     async fetchPoems() {
       //call a request filtering all accessible poems
-      listpoems = await pb.collection("poems")
+      var listpoems = await pb.collection("poems")
       //extract the number of readable poems
-      nbpoems = listpoems.length
-      poemcourant = 0
+      var nbpoems = listpoems.length
+      var poemcourant = 0
       //if the number of readable poems is not null
       if(nbpoems>0){
           //then display the first one
