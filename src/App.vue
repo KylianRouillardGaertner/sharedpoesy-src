@@ -190,7 +190,11 @@ export default {
     },
     //this method allows the already registred user to log in the system.
   },
-  nextPoem() {
+  async nextPoem() {
+    var listpoems = await pb.collection("poems")
+    //extract the number of readable poems
+    var nbpoems = listpoems.length
+    var poemcourant = 0
     //if the current displayed poem is not the last
     if (poemcourant < nbpoems - 1) {
 
